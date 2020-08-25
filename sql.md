@@ -7,7 +7,9 @@ SQL can be pronounced as "Sequel" or as "Ess-Queue-Ell".
 Useful Resources
 
 https://hunter-ducharme.gitbook.io/sql-basics/
+
 https://launchschool.com/books/sql/read/introduction
+
 https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/
 
 ##Statements:
