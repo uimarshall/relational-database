@@ -87,7 +87,8 @@ For “Destroy” queries, the classic mistake is typing `DELETE _ FROM users` w
 
 A close cousin of SELECT, for if you only want unique values of a column, is SELECT DISTINCT. Say you want a list of all the different names of your users without any duplicates… try SELECT DISTINCT users.name FROM users.
 
-Mashing Tables Together
+## Mashing Tables Together
+
 If you want to get all the posts created by a given user, you need to tell SQL which columns it should use to zip the tables together with the ON clause. Perform the “zipping” with the JOIN command. But wait, if you mash two tables together where the data doesn’t perfectly match up (e.g. there are multiple posts for one user), which rows do you actually keep? There are four different possibilities:
 
 Note: the “left” table is the original table (the one that the FROM clause was ON), e.g. “users” in examples below.\*
@@ -108,3 +109,100 @@ When you run a vanilla SQL query, you often get back a bunch of rows. Sometimes 
 You often see aliases (AS) used to rename columns or aggregate functions so you can call them by that alias later, e.g. SELECT MAX(users.age) AS highest_age FROM users will return a column called highest_age with the maximum age in it.
 
 Now we’re getting into the fun stuff. Aggregate functions like COUNT which return just a single value for your whole dataset are nice, but they become really useful when you want to use them on very specific chunks of your data and then group them together, e.g. displaying the COUNT of posts for EACH user (as opposed to the count of all posts by all users).
+
+In the `WHERE` part of a query, you can search for rows that match any of multiple attributes by using the OR keyword. For example, if you wanted to find the friends of Pickles that are over 25cm in height or are cats, you would run:
+SELECT \* FROM friends_of_pickles WHERE height_cm > 25 OR species = 'cat';
+
+> By putting DISTINCT after SELECT, you do not return duplicates.
+
+For example, if you run
+`SELECT DISTINCT` gender, species `FROM` friends_of_pickles WHERE height_cm < 100;, you will get the gender/species combinations of the animals less than 100cm in height.
+
+Using the WHERE clause, we can find rows where a value is in a list of several possible values.
+
+SELECT \* FROM friends_of_pickles WHERE species IN ('cat', 'human'); would return the friends_of_pickles that are either a cat or a human.
+
+> To find rows that are not in a list, you use NOT IN instead of IN.
+
+## ORDER BY
+
+If you want to sort the rows by some kind of attribute, you can use the ORDER BY keyword. For example, if you want to sort the friends_of_pickles by name, you would run: SELECT \* FROM friends_of_pickles ORDER BY name;. That returns the names in ascending alphabetical order.
+
+> In order to put the names in descending order, you would add a DESC at the end of the query.
+> SELECT \* FROM friends_of_pickles ORDER BY height_cm DESC;
+
+## LIMIT # of returned rows
+
+Often, tables contain millions of rows, and it can take a while to grab everything. If we just want to see a few examples of the data in a table, we can select the first few rows with the LIMIT keyword. If you use ORDER BY, you would get the first rows for that order.
+
+If you wanted to see the two shortest friends_of_pickles, you would run: SELECT \* FROM friends_of_pickles ORDER BY height_cm LIMIT 2;
+
+> Note:
+
+- Some variants of SQL do not use the LIMIT keyword.
+- The LIMIT keyword comes after the DESC keyword.
+
+SELECT \* FROM friends_of_pickles ORDER BY height_cm DESC LIMIT 1;
+
+## COUNT(\*)
+
+Another way to explore a table is to check the number of rows in it. For example, if we are querying a table states_of_us, we'd expect 50 rows, or 500 rows in a table called fortune_500_companies.
+
+SELECT COUNT(\*) FROM friends_of_pickles; returns the total number of rows in the table friends_of_pickles
+
+## COUNT(\*) ... WHERE
+
+We can combine COUNT(\*) with WHERE to return the number of rows that matches the WHERE clause.
+
+For example, SELECT COUNT(\*) FROM friends_of_pickles WHERE species = 'human'; returns 2.
+
+## SUM
+
+We can use the SUM keyword in order to find the sum of a given value.
+
+For example, running SELECT SUM(num_legs) FROM family_members; returns the total number of legs in the family.
+
+## AVG
+
+We can use the AVG keyword in order to find the average of a given value.
+
+For example, running SELECT AVG(num_legs) FROM family_members; returns the average number of legs of each family member.
+
+## MAX and MIN
+
+We can use the MAX and MIN to find the maximum or minimum value of a table.
+
+To find the least number of legs in a family member (2), you can run
+SELECT MIN(num_legs) FROM family_members;
+
+## GROUP BY
+
+You can use aggregate functions such as COUNT, SUM, AVG, MAX, and MIN with the GROUP BY clause.
+
+When you GROUP BY something, you split the table into different piles based on the value of each row.
+
+For example,
+SELECT COUNT(\*), species FROM friends_of_pickles GROUP BY species; would return the number of rows for each species.
+
+## Nested queries
+
+In SQL, you can put a SQL query inside another SQL query.
+
+For example, to find the family members with the least number of legs,
+you can run:
+SELECT \* FROM family_members WHERE num_legs = (SELECT MIN(num_legs) FROM family_members);
+
+The SELECT query inside the parentheses is executed first, and returns the minimum number of legs. Then, that value (2) is used in the outside query, to find all family members that have 2 legs.
+
+## NULL
+
+Sometimes, in a given row, there is no value at all for a given column. For example, a dog does not have a favorite book, so in that case there is no point in putting a value in the favorite_book column, and the value is NULL. In order to find the rows where the value for a column is or is not NULL, you would use IS NULL or IS NOT NULL.
+
+> Can you return all of the rows of family_members where favorite_book is not null?
+> SELECT \* FROM family_members WHERE favorite_book IS NOT NULL;
+
+## Date
+
+Sometimes, a column can contain a date value. The first 4 digits represents the year, the next 2 digits represents the month, and the next 2 digits represents the day of the month. For example, 1985-07-20 would mean July 20, 1985.
+
+You can compare dates by using < and >. For example, SELECT \* FROM celebs_born WHERE birthdate < '1985-08-17'; returns a list of celebrities that were born before August 17th, 1985.
