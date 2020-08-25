@@ -1,10 +1,10 @@
-SQL, which stands for Structured Query Language, is the programming language used to communicate with a relational database.
+`SQL`, which stands for Structured Query Language, is the programming language used to communicate with a relational database.
 
-SQL is a powerful language that uses simple English sentences that, with a few lines, allow you to Select (find), Insert (add), Update (change), and Delete (remove) a large amount of data.
+`SQL` is a powerful language that uses simple English sentences that, with a few lines, allow you to Select (find), Insert (add), Update (change), and Delete (remove) a large amount of data.
 
-SQL can be pronounced as "Sequel" or as "Ess-Queue-Ell".
+`SQL` can be pronounced as "Sequel" or as "Ess-Queue-Ell".
 
-Useful Resources
+## Useful Resources
 
 https://hunter-ducharme.gitbook.io/sql-basics/
 
@@ -12,7 +12,9 @@ https://launchschool.com/books/sql/read/introduction
 
 https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/
 
-##Statements:
+https://www.sqlteaching.com/
+
+## Statements:
 
 SELECT
 CREATE TABLE
@@ -27,7 +29,7 @@ DROP DATABASE
 COMMIT (concept)
 ROLLBACK (concept)
 
-##Clauses:
+## Clauses:
 
 DISTINCT
 WHERE
@@ -39,7 +41,7 @@ LIKE
 ORDER BY
 COUNT
 
-##Functions
+## Functions
 
 GROUP BY
 HAVING
@@ -55,20 +57,23 @@ Tables are long lists like spreadsheets where each row is a different record (or
 
 You can “link” tables together by making one of the columns in one table point to the ID of another table, for instance a row in the “posts” table might include the author’s ID under the column called “user_id”. Because the “posts” table has the ID of another table in it, that column is called a “foreign key”.
 
-Setting Stuff Up
+## Setting Stuff Up
+
 SQL lets you do everything. The first category of commands are for setting up the database (CREATE DATABASE), setting up an individual table (CREATE TABLE), and similar commands for altering or destroying them.
 
-The Schema
+## The Schema
+
 The setup information for your database is stored in a special file called the “Schema”, and this is updated whenever you make changes to the structure of your database. Think of the schema as saying “here’s our database and it’s got a couple tables. The first table is ‘users’ and it’s got columns for ‘ID’ (which is an integer), ‘name’ (which is a bunch of characters), ‘email’ (which is a bunch of characters) …”
 
 In addition to setting up tables, you can tell your database to only allow unique values in a particular column (e.g. for usernames) or to index a column for faster searching later with CREATE INDEX. Create indexes, which basically do all the hard work of sorting your table ahead of time, for columns that you’ll likely be using to search on later (like username)… it will make your database much faster.
 
 > SQL likes semicolons at the end of lines and using single quotes (‘) instead of double quotes(“)
 
-##Mucking Around with Data
+## Mucking Around with Data
+
 Once your database is set up and you’ve got empty tables to work with, you use SQL’s statements to start populating it. The main actions you want to do are CRUD (which we’ve seen before) – Create, Read, Update, and Destroy.
 
-##Every CRUDdy command in SQL contains a few parts:
+## Every CRUDdy command in SQL contains a few parts:
 
 - the action (“statement”),
 - the table it should run on,
