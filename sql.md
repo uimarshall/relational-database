@@ -206,3 +206,64 @@ Sometimes, in a given row, there is no value at all for a given column. For exam
 Sometimes, a column can contain a date value. The first 4 digits represents the year, the next 2 digits represents the month, and the next 2 digits represents the day of the month. For example, 1985-07-20 would mean July 20, 1985.
 
 You can compare dates by using < and >. For example, SELECT \* FROM celebs_born WHERE birthdate < '1985-08-17'; returns a list of celebrities that were born before August 17th, 1985.
+
+## Inner joins
+
+Different parts of information can be stored in different tables, and in order to put them together, we use INNER JOIN ... ON. Joining tables gets to the core of SQL functionality, but it can get very complicated. We will start with a simple example, and will start with an INNER JOIN.
+
+As you can see below, there are 3 tables:
+character: Each character is a row and is represented by a unique identifier (id), e.g. 1 is Doogie Howser
+character_tv_show: For each character, which show is he/she in?
+character_actor: For each character, who is the actor?
+
+See that in character_tv_show, instead of storing both the character and TV show names (e.g. Willow Rosenberg and Buffy the Vampire Slayer), it stores the character_id as a substitute for the character name. This character_id refers to the matching id row from the character table.
+
+This is done so data is not duplicated. For example, if the name of a character were to change, you would only have to change the name of the character in one row.
+
+This allows us to "join" the tables together "on" that reference/common column.
+
+To get each character name with his/her TV show name, we can write
+SELECT \* character.name, character_tv_show.tv_show_name
+FROM character
+INNER JOIN character_tv_show
+ON character.id = character_tv_show.character_id;
+This puts together every row in character with the corresponding row in character_tv_show, or vice versa.
+
+Note:
+
+- We use the syntax table_name.column_name. If we only used column_name, SQL might incorrectly assume which table it is coming from.
+- The example query above is written over multiple lines for readability, but that does not affect the query.
+
+## Multiple joins
+
+In the previous exercise, we explained that TV show character names were not duplicated, so if the name of a character were to change, you would only have to change the name of the character in one row.
+
+However, the previous example was a bit artificial because the TV show names and actor names were duplicated.
+
+In order to not duplicate any names, we need to have more tables, and use multiple joins.
+
+We have tables for characters, TV shows, and actors. Those tables represent things (also known as entities).
+
+In addition those tables, we have the relationship tables character_tv_show and character_actor, which capture the relationship between two entities.
+
+This is a flexible way of capturing the relationship between different entities, as some TV show characters might be in multiple shows, and some actors are known for playing multiple characters.
+
+To get each character name with his/her TV show name, we can write
+SELECT character.name, tv_show.name
+FROM character
+INNER JOIN character_tv_show
+ON character.id = character_tv_show.character_id
+INNER JOIN tv_show
+ON character_tv_show.tv_show_id = tv_show.id;
+
+## Joins with WHERE
+
+You can also use joins with the WHERE clause.
+
+To get a list of characters and TV shows that are not in "Buffy the Vampire Slayer" and are not Barney Stinson, you would run:
+SELECT character.name, tv_show.name
+FROM character
+INNER JOIN character_tv_show
+ON character.id = character_tv_show.character_id
+INNER JOIN tv_show
+ON character_tv_show.tv_show_id = tv_show.id WHERE character.name != 'Barney Stinson' AND tv_show.name != 'Buffy the Vampire Slayer';
